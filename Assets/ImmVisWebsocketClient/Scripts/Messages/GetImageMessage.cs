@@ -1,8 +1,9 @@
 
 
 using System;
+using Newtonsoft.Json;
 
-[Serializable]
+[JsonObject]
 class GetImage : BaseMessage<GetImage>
 {
     private GetImage() : base("get_image") { }

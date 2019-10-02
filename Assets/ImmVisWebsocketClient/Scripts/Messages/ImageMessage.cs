@@ -1,24 +1,26 @@
 
 
 using System;
+using Newtonsoft.Json;
 using UnityEngine;
 
-[Serializable]
+[JsonObject]
 public class ImageMessage : BaseMessage<ImageMessage>
 {
 
-    [SerializeField] private string image;
+    [JsonProperty] private string image;
 
     private byte[] image_bytes = null;
 
-    [SerializeField] private string image_mode;
+    [JsonProperty] private string image_mode;
 
-    [SerializeField] private string image_format;
+    [JsonProperty] private string image_format;
 
-    [SerializeField] private int image_width;
+    [JsonProperty] private int image_width;
 
-    [SerializeField] private int image_height;
+    [JsonProperty] private int image_height;
 
+    [JsonIgnore]
     public string Mode
     {
         get
@@ -27,6 +29,7 @@ public class ImageMessage : BaseMessage<ImageMessage>
         }
     }
 
+    [JsonIgnore]
     public string Format
     {
         get
@@ -35,6 +38,7 @@ public class ImageMessage : BaseMessage<ImageMessage>
         }
     }
 
+    [JsonIgnore]
     public byte[] Bytes
     {
         get
@@ -48,16 +52,18 @@ public class ImageMessage : BaseMessage<ImageMessage>
         }
     }
 
+    [JsonIgnore]
     public int Width
     {
         get { return image_width; }
     }
 
+    [JsonIgnore]
     public int Height
     {
         get { return image_height; }
     }
 
-    public ImageMessage(string type) : base(type) { }
+    public ImageMessage(string type) : base("image") { }
 
 }

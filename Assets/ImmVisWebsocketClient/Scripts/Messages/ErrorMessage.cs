@@ -1,11 +1,13 @@
 using System;
+using Newtonsoft.Json;
 using UnityEngine;
 
-[Serializable]
-class ErrorMessage  : BaseMessage<GetImage>
+[JsonObject]
+class ErrorMessage : BaseMessage<ErrorMessage>
 {
-    [SerializeField] private string cause;
+    [JsonProperty] private string cause;
 
+    [JsonIgnore]
     public string Cause
     {
         get { return cause; }
@@ -16,7 +18,8 @@ class ErrorMessage  : BaseMessage<GetImage>
         this.cause = cause;
     }
 
-    public static ErrorMessage Create(string cause){
+    public static ErrorMessage Create(string cause)
+    {
         return new ErrorMessage(cause);
     }
 }

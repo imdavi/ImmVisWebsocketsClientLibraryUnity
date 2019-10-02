@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -8,7 +9,7 @@ public class ImmVisWebsocketManager : MonoBehaviour
 {
     private WebSocket ws;
 
-    public Plotter plotter;
+    public PlotterBehaviour plotter;
 
     private static Queue<Action> ActionsQueue = new Queue<Action>();
 
@@ -18,7 +19,6 @@ public class ImmVisWebsocketManager : MonoBehaviour
         ws.OnMessage += (sender, e) =>
         {
             var payload = e.Data;
-            Debug.Log($"Answer: {payload}");
 
             try
             {
@@ -28,20 +28,30 @@ public class ImmVisWebsocketManager : MonoBehaviour
                 {
                     case "image":
                         var imageMessage = ImageMessage.FromJson(payload);
-                        Debug.Log($"Received an image with size {imageMessage.Bytes.Length}");
 
                         ExecuteOnMainThread(() =>
                         {
-                            plotter?.Plot(imageMessage);
+                            plotter?.PlotImage(imageMessage);
                         });
 
                         break;
+
+                    case "heightmap":
+                        var heightmapMessage = HeightmapMessage.FromJson(payload);
+
+                        ExecuteOnMainThread(() =>
+                        {
+                            plotter?.PlotHeightmap(heightmapMessage);
+                        });
+
+                        break;
+
                     case "error":
                         var errorMessage = ErrorMessage.FromJson(payload);
-                        Debug.Log($"Error on server: {errorMessage}");
+                        Debug.LogError($"Error on server: {errorMessage.Cause}");
                         break;
                     default:
-                        Debug.Log("Unknown type of message.");
+                        Debug.LogError("Unknown type of message.");
                         break;
                 }
             }
@@ -53,7 +63,7 @@ public class ImmVisWebsocketManager : MonoBehaviour
 
         ws.OnOpen += (sender, e) =>
         {
-            string json = JsonUtility.ToJson(GetImage.Create());
+            string json = JsonConvert.SerializeObject(GetHeightmap.Create());
             ws.Send(json);
         };
 

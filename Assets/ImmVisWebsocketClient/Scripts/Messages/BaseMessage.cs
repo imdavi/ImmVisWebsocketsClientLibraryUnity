@@ -1,13 +1,15 @@
 
 
 using System;
+using Newtonsoft.Json;
 using UnityEngine;
 
-[Serializable]
+[JsonObject]
 public abstract class BaseMessage<M>
 {
-    [SerializeField] private string type;
+    [JsonProperty] private string type;
 
+    [JsonIgnore]
     public string Type
     {
         get { return type; }
@@ -20,6 +22,6 @@ public abstract class BaseMessage<M>
 
     public static M FromJson(string jsonString)
     {
-        return JsonUtility.FromJson<M>(jsonString);
+        return JsonConvert.DeserializeObject<M>(jsonString);
     }
 }
