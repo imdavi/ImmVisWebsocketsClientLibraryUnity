@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 
 [JsonObject]
-public class ImageMessage : BaseMessage<ImageMessage>
+public class ImageMessage : Message
 {
 
     [JsonProperty] private string image;
@@ -64,6 +64,7 @@ public class ImageMessage : BaseMessage<ImageMessage>
         get { return image_height; }
     }
 
-    public ImageMessage(string type) : base("image") { }
+    public ImageMessage() : base(MessageType) { }
 
+    public static string MessageType { get; } = "image";
 }

@@ -4,12 +4,10 @@ using System;
 using Newtonsoft.Json;
 
 [JsonObject]
-class GetHeightmap : BaseMessage<GetHeightmap>
+class GetHeightmap : Message
 {
-    private GetHeightmap() : base("get_heightmap") { }
+    private GetHeightmap() : base(MessageType) { }
 
-    public static GetHeightmap Create()
-    {
-        return new GetHeightmap();
-    }
+    public static string MessageType { get; } = "get_heightmap";
+    public static Message Message { get; } = new GetHeightmap();
 }

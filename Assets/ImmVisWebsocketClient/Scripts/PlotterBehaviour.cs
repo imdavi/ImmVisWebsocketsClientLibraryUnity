@@ -1,12 +1,12 @@
 
 
 
+using System;
 using UnityEngine;
 
-public abstract class PlotterBehaviour : MonoBehaviour {
-
-    public abstract void PlotImage(ImageMessage imageMessage);
-
-    public abstract void PlotHeightmap(HeightmapMessage heightmapMessage);
-
+public abstract class MessageListener : MonoBehaviour
+{
+    public abstract void ClientInitialized(ImmVisWebsocketClient client);
+    public abstract void MessageReceived(Message message);
+    public abstract void ClientEnded();
 }

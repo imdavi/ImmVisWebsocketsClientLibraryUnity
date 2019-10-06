@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 
 [JsonObject]
-public class HeightmapMessage : BaseMessage<HeightmapMessage>
+public class HeightmapMessage : Message
 {
 
     [JsonProperty] private int image_width;
@@ -32,6 +32,7 @@ public class HeightmapMessage : BaseMessage<HeightmapMessage>
         get { return image_height; }
     }
 
-    public HeightmapMessage(string type) : base("heightmap") { }
+    public HeightmapMessage() : base(MessageType) { }
 
+    public static string MessageType { get; } = "heightmap";
 }

@@ -7,67 +7,60 @@ using WebSocketSharp;
 
 public class ImmVisWebsocketManager : MonoBehaviour
 {
-    private WebSocket ws;
+    private ImmVisWebsocketClient websocketClient;
 
-    public PlotterBehaviour plotter;
+    public MessageListener plotter;
 
     private static Queue<Action> ActionsQueue = new Queue<Action>();
 
     void Awake()
     {
-        ws = new WebSocket("ws://localhost:8888/websocket");
-        ws.OnMessage += (sender, e) =>
+        websocketClient = new ImmVisWebsocketClient(path: "websocket");
+
+        websocketClient.Connected += ClientConnected;
+        websocketClient.Disconnected += ClientDisconnected;
+        websocketClient.MessageReceived += MessageReceived;
+        websocketClient.RawMessageReceived += RawMessageReceived;
+        websocketClient.Error += ClientError;
+
+        websocketClient.Initialize();
+    }
+
+    private void RawMessageReceived(string message)
+    {
+        Debug.Log($"Raw message:\n{message}");
+    }
+
+    private void ClientError(Exception exception)
+    {
+        Debug.LogError(exception);
+    }
+
+    private void MessageReceived(Message message)
+    {
+        Debug.Log("Received a message!");
+
+        if(message != null) 
         {
-            var payload = e.Data;
+            plotter?.MessageReceived(message);
+        }
 
-            try
-            {
-                var message = Message.FromJson(payload);
+                // ExecuteOnMainThread(() =>
+        // {
+        //     plotter?.PlotHeightmap(heightmapMessage);
+        // });
 
-                switch (message.Type)
-                {
-                    case "image":
-                        var imageMessage = ImageMessage.FromJson(payload);
+    }
 
-                        ExecuteOnMainThread(() =>
-                        {
-                            plotter?.PlotImage(imageMessage);
-                        });
+    private void ClientDisconnected()
+    {
+        Debug.Log("Disconnected from server.");
+    }
 
-                        break;
-
-                    case "heightmap":
-                        var heightmapMessage = HeightmapMessage.FromJson(payload);
-
-                        ExecuteOnMainThread(() =>
-                        {
-                            plotter?.PlotHeightmap(heightmapMessage);
-                        });
-
-                        break;
-
-                    case "error":
-                        var errorMessage = ErrorMessage.FromJson(payload);
-                        Debug.LogError($"Error on server: {errorMessage.Cause}");
-                        break;
-                    default:
-                        Debug.LogError("Unknown type of message.");
-                        break;
-                }
-            }
-            catch (System.Exception exception)
-            {
-                Debug.Log(exception.Message);
-            }
-        };
-
-        ws.OnOpen += (sender, e) =>
-        {
-            string json = JsonConvert.SerializeObject(GetHeightmap.Create());
-            ws.Send(json);
-        };
-
-        ws.Connect();
+    private void ClientConnected()
+    {
+        Debug.Log("Connected on server!");
+        websocketClient.SendMessage(GetImage.Message);
     }
 
     void ExecuteOnMainThread(Action action)
@@ -85,6 +78,10 @@ public class ImmVisWebsocketManager : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        ws.Close();
+        websocketClient.Connected -= ClientConnected;
+        websocketClient.Disconnected -= ClientDisconnected;
+        websocketClient.MessageReceived -= MessageReceived;
+        websocketClient.Error -= ClientError;
+        websocketClient.Release();
     }
 }

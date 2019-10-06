@@ -4,12 +4,11 @@ using System;
 using Newtonsoft.Json;
 
 [JsonObject]
-class GetImage : BaseMessage<GetImage>
+class GetImage : Message
 {
-    private GetImage() : base("get_image") { }
+    private GetImage() : base(MessageType) { }
 
-    public static GetImage Create()
-    {
-        return new GetImage();
-    }
+    public static string MessageType { get; } = "get_image";
+
+    public static Message Message { get; private set; } = new GetImage();
 }
