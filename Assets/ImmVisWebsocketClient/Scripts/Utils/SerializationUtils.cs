@@ -21,10 +21,13 @@ public class SerializationUtils
 
     private static Dictionary<String, MessageDeserializeDelegate> DeserializationDictionary = new Dictionary<string, MessageDeserializeDelegate>
     {
-        { ErrorMessage.MessageType, (json) => DeserializeObject<ErrorMessage>(json) },
-        { HeightmapMessage.MessageType, (json) => DeserializeObject<HeightmapMessage>(json) },
-        { ImageMessage.MessageType, (json) => DeserializeObject<ImageMessage>(json) }
+        { ErrorMessage.MessageType, (json) => DeserializeObject<ErrorMessage>(json) }
     };
+
+    public static void RegisterMessageType<T>(string messageType) where T : Message
+    {
+        DeserializationDictionary.Add(messageType, (json) => DeserializeObject<T>(json));
+    }
 
     public static Message DeserializeMessage(string messageJsonString)
     {

@@ -3,29 +3,63 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Plotter : MessageListener
+public class Plotter : MonoBehaviour
 {
-    public virtual void Update()
-    {
 
+    public ImmVisWebsocketManager WebsocketManager;
+
+    void Awake()
+    {
+        RegisterMessageTypes();
+        InitializeWebsocketClient();
     }
 
-    public override void PlotImage(ImageMessage imageMessage)
+    private void InitializeWebsocketClient()
     {
-        Debug.Log("Use image message to plot the image.");
+        if (WebsocketManager != null && !WebsocketManager.IsConnected)
+        {
+            WebsocketManager.Connected += ClientConnected;
+            WebsocketManager.MessageReceived += MessageReceived;
+            WebsocketManager.InitializeClient();
+        }
+    }
 
-        var sprite = gameObject.GetComponent<Sprite>();
+    private void ClientConnected()
+    {
+        Debug.Log("Now you can send messages!");
+        WebsocketManager.Send(GetImage.Message);
+    }
 
+    private void MessageReceived(Message message)
+    {
+        if (message is HeightmapMessage)
+        {
+            DisplayHeightmap(message as HeightmapMessage);
+        }
+        else if (message is ImageMessage)
+        {
+            DisplayImage(message as ImageMessage);
+        }
+    }
+
+    private void DisplayHeightmap(HeightmapMessage heightmapMessage)
+    {
+        Debug.Log("Not implemented yet!");
+    }
+    private void DisplayImage(ImageMessage imageMessage)
+    {
+        Debug.Log("Render image!");
+        var spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         var texture = new Texture2D(2, 2);
         texture.LoadImage(imageMessage.Bytes);
 
-        Instantiate(gameObject, gameObject.transform.position * 2, gameObject.transform.rotation);
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        spriteRenderer.sprite = sprite;
     }
 
-    public override void PlotHeightmap(HeightmapMessage heightmapMessage)
+    private void RegisterMessageTypes()
     {
-        Debug.Log("Use heightmap message to plot the heightmap.");
-
-
+        SerializationUtils.RegisterMessageType<HeightmapMessage>(HeightmapMessage.MessageType);
+        SerializationUtils.RegisterMessageType<ImageMessage>(ImageMessage.MessageType);
     }
 }
