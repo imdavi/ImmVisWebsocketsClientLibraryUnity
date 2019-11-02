@@ -1,9 +1,27 @@
 
+
 using System;
+using Newtonsoft.Json;
 using UnityEngine;
 
-[Serializable]
-public class Message : BaseMessage<Message>
+[JsonObject]
+public class Message
 {
-    public Message(string type) : base(type) { }
+    [JsonProperty] private string type;
+
+    [JsonIgnore]
+    public string Type
+    {
+        get { return type; }
+    }
+
+    public Message(string type)
+    {
+        this.type = type;
+    }
+
+    public override String ToString()
+    {
+        return $"Message {{ type:{type} }}";
+    }
 }
