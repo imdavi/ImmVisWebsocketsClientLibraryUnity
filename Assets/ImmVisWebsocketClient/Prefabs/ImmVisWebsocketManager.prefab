@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8711391507246112499
+--- !u!1 &475119648727912197
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8711391507246112509}
-  - component: {fileID: 5610468414311862635}
+  - component: {fileID: 7998331234449160155}
+  - component: {fileID: 475119648727912196}
+  - component: {fileID: 4118121801601036666}
   m_Layer: 0
   m_Name: ImmVisWebsocketManager
   m_TagString: Untagged
@@ -17,13 +18,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8711391507246112509
+--- !u!4 &7998331234449160155
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8711391507246112499}
+  m_GameObject: {fileID: 475119648727912197}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,18 +32,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5610468414311862635
+--- !u!114 &475119648727912196
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8711391507246112499}
+  m_GameObject: {fileID: 475119648727912197}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1fe5428f2133f3e982090348ac7ab43, type: 3}
+  m_Script: {fileID: 11500000, guid: 7fcdc7d14effdb808949ea54f1f7ffd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ServerAddress: localhost
-  ServerPort: 8888
+  ServerAddress: 127.0.0.1
+  ServerPort: 5000
   Path: websocket
+--- !u!114 &4118121801601036666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475119648727912197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff1673e35acaa064d82a8b04c57abcac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DiscoveryPort: 5000
+  MagicId: U2bhY3XUOli9GgdUGs9ruxuXKpuj78Qi3zNT5IEkiQy5ex4UxqXZ5ZDAj9vkTyVz2GZiFXDS4bY5Ayve2HrAiB7G2jN7d5rskERyj3b5GeQAv1PYEOdD5sys

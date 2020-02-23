@@ -1,24 +1,27 @@
 using System.Text;
 using WebSocketSharp;
 
-public class ClientUrlBuilder
+namespace ImmVis.Utils
 {
-    private const string DEFAULT_SERVER_ADDRESS = "localhost";
-    private const int DEFAULT_SERVER_PORT = 8888;
-
-    public static string BuildServerUrl(string address, int port = DEFAULT_SERVER_PORT, string path = "")
+    public class ClientUrlBuilder
     {
-        StringBuilder stringBuilder = new StringBuilder("ws://");
+        private const string DEFAULT_SERVER_ADDRESS = "localhost";
+        private const int DEFAULT_SERVER_PORT = 8888;
 
-        stringBuilder.Append(address.IsNullOrEmpty() ? DEFAULT_SERVER_ADDRESS : address);
-
-        stringBuilder.Append($":{port}");
-
-        if (!path.IsNullOrEmpty())
+        public static string BuildServerUrl(string address, int port = DEFAULT_SERVER_PORT, string path = "")
         {
-            stringBuilder.Append($"/{path}");
-        }
+            StringBuilder stringBuilder = new StringBuilder("ws://");
 
-        return stringBuilder.ToString();
+            stringBuilder.Append(address.IsNullOrEmpty() ? DEFAULT_SERVER_ADDRESS : address);
+
+            stringBuilder.Append($":{port}");
+
+            if (!path.IsNullOrEmpty())
+            {
+                stringBuilder.Append($"/{path}");
+            }
+
+            return stringBuilder.ToString();
+        }
     }
 }

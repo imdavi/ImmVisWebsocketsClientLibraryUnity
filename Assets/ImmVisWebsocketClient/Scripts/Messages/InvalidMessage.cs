@@ -1,21 +1,24 @@
 using System;
 
-public class InvalidMessage : Message
+namespace ImmVis.Messages
 {
-    public string ReceivedMessage { get; private set; }
-
-    public Exception Error { get; private set; }
-
-    private InvalidMessage(string receivedMessage, Exception error) : base(MessageType)
+    public class InvalidMessage : Message
     {
-        ReceivedMessage = receivedMessage;
-        Error = error;
-    }
+        public string ReceivedMessage { get; private set; }
 
-    public static InvalidMessage Create(string receivedMessage, Exception error)
-    {
-        return new InvalidMessage(receivedMessage, error);
-    }
+        public Exception Error { get; private set; }
 
-    public static string MessageType { get; } = "invalid_message";
+        private InvalidMessage(string receivedMessage, Exception error) : base(MessageType)
+        {
+            ReceivedMessage = receivedMessage;
+            Error = error;
+        }
+
+        public static InvalidMessage Create(string receivedMessage, Exception error)
+        {
+            return new InvalidMessage(receivedMessage, error);
+        }
+
+        public static string MessageType { get; } = "invalid_message";
+    }
 }
