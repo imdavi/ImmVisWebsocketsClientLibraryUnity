@@ -1,27 +1,31 @@
-
-
 using System;
 using Newtonsoft.Json;
 using UnityEngine;
 
-[JsonObject]
-public class Message
+namespace ImmVis.Messages
 {
-    [JsonProperty] private string type;
-
-    [JsonIgnore]
-    public string Type
+    [JsonObject]
+    public class Message
     {
-        get { return type; }
-    }
+        [JsonIgnore]
+        public const string TypeField = "object_type";
+        
+        [JsonProperty(TypeField)] private string type;
 
-    public Message(string type)
-    {
-        this.type = type;
-    }
+        [JsonIgnore]
+        public string Type
+        {
+            get { return type; }
+        }
 
-    public override String ToString()
-    {
-        return $"Message {{ type:{type} }}";
+        public Message(string type)
+        {
+            this.type = type;
+        }
+
+        public override String ToString()
+        {
+            return $"Message {{ type:{type} }}";
+        }
     }
 }

@@ -1,32 +1,32 @@
 using System;
 using Newtonsoft.Json;
-using UnityEngine;
+using Newtonsoft.Json.Converters;
 
-[JsonObject]
-class ErrorMessage : Message
+namespace ImmVis.Messages
 {
-    [JsonProperty] private string cause;
-
-    [JsonIgnore]
-    public string Cause
+    [JsonObject]
+    class ErrorMessage : Message
     {
-        get { return cause; }
-    }
+        [JsonProperty] private string cause;
 
-    private ErrorMessage(string cause) : base(MessageType)
-    {
-        this.cause = cause;
-    }
+        [JsonIgnore]
+        public string Cause
+        {
+            get { return cause; }
+        }
 
-    public static string MessageType { get; } = "error";
+        public ErrorMessage() : base(MessageType) {}
 
-    public static ErrorMessage Create(string cause)
-    {
-        return new ErrorMessage(cause);
-    }
+        public const string MessageType = "error";
 
-    public override String ToString()
-    {
-        return $"Error {{ cause:\"{cause.ToString()}\" }}";
+        public static ErrorMessage Create()
+        {
+            return new ErrorMessage();
+        }
+
+        public override String ToString()
+        {
+            return $"Error {{ cause:\"{cause.ToString()}\" }}";
+        }
     }
 }

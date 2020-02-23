@@ -1,8 +1,7 @@
-
+using ImmVis.Messages;
 public class UnknownMessage : Message
 {
     public string ReceivedMessage { get; private set; }
-
 
     private UnknownMessage(string receivedMessage) : base(MessageType)
     {
@@ -14,5 +13,5 @@ public class UnknownMessage : Message
         return new UnknownMessage(receivedMessage);
     }
 
-    public static string MessageType { get; } = "unknown_message";
+    public const string MessageType = "unknown_message";
 }
